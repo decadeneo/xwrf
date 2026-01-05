@@ -414,24 +414,7 @@ class WRFDiagnosticsAccessor:
 
     def td2(self):
         """2m Dewpoint Temperature."""
-        if not WRF_AVAILABLE:
-            Q2 = self._get_var(['Q2', 'QV2M'])
-            PSFC = self._get_var(['PSFC', 'psfc'])
-            qv = Q2.values
-            p = PSFC.values * 0.01  # Convert to hPa
-            # Approximate dewpoint calculation
-            # Magnus formula approximation
-            rh = self.rh2().values / 100.0
-            # Simple dewpoint approximation from RH and T
-            T2 = self._get_var(['T2', 'T2']).values
-            es = 6.112 * np.exp(17.67 * (T2 - 273.15) / (T2 - 273.15 + 243.5))
-            e = es * rh
-            # Inverse Magnus for dewpoint
-            td = 243.5 * np.log(e / 6.112) / (17.67 - np.log(e / 6.112))
-            res = td + 273.15  # Convert to Kelvin
-            return self._wrap_result(res, Q2, 'td2', 'K', '2m Dewpoint Temperature')
-        else:
-            Q2 = self._get_var(['Q2', 'QV2M'])
-            PSFC = self._get_var(['PSFC', 'psfc'])
-            res = wrf.td(PSFC.values * 0.01, Q2.values)
-            return self._wrap_result(res, Q2, 'td2', 'K', '2m Dewpoint Temperature')
+        Q2 = self._get_var(['Q2', 'QV2M'])
+        PSFC = self._get_var(['PSFC', 'psfc'])
+        res = wrf.td(PSFC.values * 0.01, Q2.values)
+        return self._wrap_result(res, Q2, 'td2', 'K', '2m Dewpoint Temperature')
