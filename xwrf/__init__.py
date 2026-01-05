@@ -8,6 +8,7 @@ from . import postprocess, tutorial
 from .accessors import WRFDataArrayAccessor, WRFDatasetAccessor
 from .config import config
 from .version_report import show_versions
+from . import xwrf_diagnostics
 
 try:
     __version__ = version(__name__)
